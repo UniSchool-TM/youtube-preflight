@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YouTube Preflight
 
-## Getting Started
+YouTube動画の投稿前に、タイトル・サムネイル・概要欄・チャプター・ハッシュタグ・動画時間をブラウザ内でチェックする無料ツールです。
 
-First, run the development server:
+## 特徴
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- **すべてブラウザ内で処理** — 判定にAI・外部API・APIキーは一切使いません。画像や入力内容が外部に送信されることはありません。
+- **決定的なルールベース判定** — 同じ入力なら常に同じ結果。100点満点でカテゴリごとに理由付きでスコア表示。
+- **統計解析** — サムネイルはCanvasによる色・コントラスト・視認性解析、タイトルは語の重要度（TF特有）・文字種・繰り返し・語彙化率などを解析。
+- **比較機能** — 複数の入力案を保存して並べて比較。
+- **履歴とエクスポート** — 診断結果をブラウザ内（LocalStorage / IndexedDB）に保存し、PNG画像やJSONで書き出せます。
+- **PWA対応** — オフラインでも動作します。
+- **ダークモード対応**。
+
+## スコア配分（100点満点）
+
+| カテゴリ | 配点 |
+| --- | --- |
+| サムネイル | 30点 |
+| タイトル | 25点 |
+| タイトル × サムネイル | 20点 |
+| 概要欄 | 10点 |
+| チャプター | 5点 |
+| ハッシュタグ | 5点 |
+| 技術的な指標 | 5点 |
+
+各カテゴリには達成・警告・改善すべき点が理由付きで表示されます。
+
+> 注意: 本ツールは投稿前チェック項目の達成度を独自基準でスコア化しています。CTRや再生数を予測するものではありません。
+
+## 技術スタック
+
+- Next.js 16（App Router / Turbopack）
+- React 19
+- Tailwind CSS v4（class ベースのダークモード）
+- Vitest（ユニットテスト）
+- Web Worker + Canvas（サムネイル解析）
+- IndexedDB / LocalStorage（データ保存）
+
+## ディレクトリ構成
+
+```
+src/
+  app/              # 各ページ（/、/diagnose、/compare、/history、/settings、/about）
+  components/       # UI部品（診断フォーム、結果表示、ガイド等）
+  hooks/            # useHistory / useTheme / useSettings
+  lib/              # 純粋ロジック（解析・スコアリング、テスト）
+  workers/          # サムネイル解析用 Web Worker
+public/
+  sw.js             # 本番用 Service Worker（PWA）
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 開発
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+[http://localhost:3000](http://localhost:3000) にアクセスしてください。
 
-## Learn More
+## テスト
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm test        # ユニットテスト（解析・スコアリング）
+npm run lint    # ESLint
+npm run build   # プロダクションビルド
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## データとプライバシー
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- 診断結果は `LocalStorage`（キー `yp_history_v1`、最大200件）、サムネイル画像は `IndexedDB` に保存されます。
+- 外部へのデータ送信はありません。広告・トラッキングもありません。
+- 「設定」から履歴・保存画像・全データをいつでも削除できます。
 
-## Deploy on Vercel
+## ライセンス
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
