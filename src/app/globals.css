@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #f6f7fa;
+  --foreground: #17181c;
+  --card: #ffffff;
+  --card-foreground: #17181c;
+  --muted: #6b7280;
+  --border: #e5e7eb;
+  --accent: #2a6df4;
+  --good: #16a34a;
+  --warn: #b45309;
+  --crit: #dc2626;
+  --info: #2563eb;
+}
+
+.dark {
+  --background: #0d0f14;
+  --foreground: #e8ebf0;
+  --card: #161922;
+  --card-foreground: #e8ebf0;
+  --muted: #9aa3b2;
+  --border: #2b303b;
+  --accent: #4d8bff;
+  --good: #22c55e;
+  --warn: #eab308;
+  --crit: #ef4444;
+  --info: #60a5fa;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-crit: var(--crit);
+  --color-info: var(--info);
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Hiragino Sans",
+    "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Accessible focus ring */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 8px;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 8px;
+  background: var(--accent);
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: 6px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Scroll bars */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+
+/* Thumbnail guide overlays */
+.guide-line {
+  pointer-events: none;
+}
+.guide-16x9 {
+  outline: 2px dashed rgba(255, 255, 255, 0.85);
+  outline-offset: -2px;
+}
+.guide-center::before,
+.guide-center::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.7);
+}
+.guide-center::before {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+.guide-center::after {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+}
+.guide-thirds::before,
+.guide-thirds::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.6);
+}
+.guide-thirds::before {
+  left: 33.333%;
+}
+.guide-thirds::after {
+  left: 66.666%;
+}
+.guide-safe {
+  inset: 5%;
+  border: 2px solid rgba(0, 255, 170, 0.8);
+}
+.guide-margin {
+  inset: 1.5%;
+  border: 2px solid rgba(60, 140, 255, 0.7);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    display: block !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
 }
