@@ -11,7 +11,8 @@ export function PwaRegister() {
   useEffect(() => {
     if (typeof window === "undefined" || !("serviceWorker" in navigator)) return;
     const isProd = process.env.NODE_ENV === "production";
-    const url = isProd ? "/sw.js" : "/sw-dev.js";
+    const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+    const url = `${basePath}${isProd ? "/sw.js" : "/sw-dev.js"}`;
     navigator.serviceWorker
       .register(url)
       .catch(() => {

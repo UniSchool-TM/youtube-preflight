@@ -1,10 +1,23 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { Button, Card, cn } from "@/components/ui";
 import { useHistory } from "@/hooks/useHistory";
+import { HistoryDetail } from "@/components/history/HistoryDetail";
 
 export default function HistoryPage() {
+  return (
+    <Suspense fallback={<p className="text-sm text-muted">読み込み中…</p>}>
+      <HistoryContent />
+    </Suspense>
+  );
+}
+
+function HistoryContent() {
+  const searchParams = useSearchParams();
+  const detailId = searchParams.get("id");
   const { history, loaded, remove, clear } = useHistory();
 
   const handleClearAll = () => {
@@ -12,6 +25,10 @@ export default function HistoryPage() {
       void clear();
     }
   };
+
+  if (detailId) {
+    return <HistoryDetail id={detailId} />;
+  }
 
   return (
     <div className="space-y-6">
@@ -56,7 +73,7 @@ export default function HistoryPage() {
                   {h.totalScore}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <Link href={`/history/${h.id}`} className="block truncate font-semibold text-foreground hover:underline">
+                  <Link href={`/history?id=${h.id}`} className="block truncate font-semibold text-foreground hover:underline">
                     {h.title}
                   </Link>
                   <p className="text-xs text-muted">

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
 import type { DiagnosisResult } from "@/types";
 import { Button, Card } from "@/components/ui";
 import { ScoreSection } from "@/components/diagnose/ScoreSection";
@@ -13,9 +12,7 @@ import { RelationSection, DescriptionSection, ChapterSection, HashtagSection } f
 import { useHistory } from "@/hooks/useHistory";
 import { downloadResultPng } from "@/lib/export";
 
-export default function HistoryDetailPage() {
-  const params = useParams<{ id: string }>();
-  const id = params.id;
+export function HistoryDetail({ id }: { id: string }) {
   const { history, loaded } = useHistory();
   const [blobUrl, setBlobUrl] = useState<string | null>(null);
 
@@ -69,6 +66,9 @@ export default function HistoryDetailPage() {
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="min-w-0">
+          <Link href="/history" className="text-sm text-accent underline">
+            ← 履歴一覧へ戻る
+          </Link>
           <h1 className="truncate text-xl font-bold text-foreground">{result.input.title || "（タイトル未入力）"}</h1>
           <p className="mt-1 text-xs text-muted">
             {new Date(result.createdAt).toLocaleString("ja-JP")}

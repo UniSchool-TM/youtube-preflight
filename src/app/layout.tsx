@@ -5,7 +5,8 @@ import { Footer } from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
 import { PwaRegister } from "@/components/PwaRegister";
 
-const SITE = "https://youtube-preflight.jp";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://youtube-preflight.jp";
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -33,6 +34,7 @@ export const metadata: Metadata = {
     title: "YouTube Preflight — YouTube投稿前チェックツール",
     description:
       "YouTube動画のタイトル、サムネイル、概要欄、チャプターなどを無料で投稿前チェック。AI・外部APIを使わずブラウザ内で解析。",
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "YouTube Preflight" }],
   },
   twitter: {
     card: "summary_large_image",
@@ -42,10 +44,10 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   applicationName: "YouTube Preflight",
-  manifest: "/manifest.webmanifest",
+  manifest: `${BASE_PATH}/manifest.webmanifest`,
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon-180.png",
+    icon: `${BASE_PATH}/icon.svg`,
+    apple: `${BASE_PATH}/icon-180.png`,
   },
 };
 

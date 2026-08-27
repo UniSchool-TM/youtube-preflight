@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { ThumbnailAnalysis, TitleAnalysis } from "@/types";
 import { Button, Card, Field, SectionHeading, cn, inputClass } from "@/components/ui";
 import { Meter } from "@/components/diagnose/analysisViews";
@@ -313,7 +314,7 @@ function DiagnosisCompare() {
       {!loaded ? (
         <p className="text-sm text-muted">履歴を読み込み中…</p>
       ) : history.length === 0 ? (
-        <p className="text-sm text-muted">履歴がまだありません。<a className="text-accent underline" href="/diagnose">診断ページ</a>から最初の診断を行ってください。</p>
+        <p className="text-sm text-muted">履歴がまだありません。<Link className="text-accent underline" href="/diagnose">診断ページ</Link>から最初の診断を行ってください。</p>
       ) : (
         <>
           <p className="mb-2 text-xs text-muted">比較する履歴を選択（{selected.length}/5）:</p>
