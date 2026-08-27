@@ -19,7 +19,6 @@ export function RelationSection({ rel }: { rel: TitleThumbnailRelation }) {
   return (
     <Card ariaLabel="タイトルとサムネイルの関係">
       <SectionHeading
-        icon="🔄"
         title="タイトル × サムネイル文字"
         description="タイトルの語と「サムネイル文字」欄の語を比較しました。OCRや外部サービスは使用していません。"
         right={
@@ -59,7 +58,6 @@ export function DescriptionSection({ d }: { d: DescriptionAnalysis }) {
   return (
     <Card ariaLabel="概要欄の解析結果">
       <SectionHeading
-        icon="📝"
         title="概要欄の解析"
         description="文字数・URL・ハッシュタグ・改行構造を確認します。"
       />
@@ -129,7 +127,6 @@ export function ChapterSection({ c }: { c: ChapterAnalysis }) {
   return (
     <Card ariaLabel="チャプターの解析結果">
       <SectionHeading
-        icon="⏱️"
         title="チャプターの解析"
         description="時刻の形式・順序・動画尺との整合性を確認します。"
       />
@@ -195,7 +192,6 @@ export function HashtagSection({ h }: { h: HashtagAnalysis }) {
   return (
     <Card ariaLabel="ハッシュタグの解析結果">
       <SectionHeading
-        icon="#️⃣"
         title="ハッシュタグの解析"
         description="個数・重複・文字種を確認します。"
       />

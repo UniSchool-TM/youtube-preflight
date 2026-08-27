@@ -260,7 +260,7 @@ function DiagnoseContent() {
 
         {/* Video info */}
         <Card ariaLabel="動画情報">
-          <SectionHeading icon="🎬" title="動画情報" />
+          <SectionHeading title="動画情報" />
           <div className="grid gap-5 md:grid-cols-2">
             <Field htmlFor="title" label="動画タイトル" required hint="100文字以内を推奨">
               <input id="title" className={inputClass} value={form.title} onChange={set("title")} placeholder="例: 【徹底比較】動画編集ソフトを1年間使った結果" />
@@ -283,7 +283,7 @@ function DiagnoseContent() {
 
         {/* Description */}
         <Card ariaLabel="概要欄">
-          <SectionHeading icon="📝" title="概要欄" />
+          <SectionHeading title="概要欄" />
           <Field htmlFor="description" label="概要欄テキスト">
             <textarea
               id="description"
@@ -299,7 +299,6 @@ function DiagnoseContent() {
         {/* Thumbnail */}
         <Card ariaLabel="サムネイル">
           <SectionHeading
-            icon="🖼️"
             title="サムネイル"
             description="画像はブラウザ内でのみ解析します。外部へアップロードされません。"
           />
@@ -319,7 +318,7 @@ function DiagnoseContent() {
 
         {/* Chapters */}
         <Card ariaLabel="チャプター">
-          <SectionHeading icon="⏱️" title="チャプター" description="MM:SS または HH:MM:SS とタイトルを1行ずつ入力します。" />
+          <SectionHeading title="チャプター" description="MM:SS または HH:MM:SS とタイトルを1行ずつ入力します。" />
           <Field htmlFor="chapters" label="チャプター">
             <textarea
               id="chapters"
@@ -334,7 +333,7 @@ function DiagnoseContent() {
 
         {/* Hashtags */}
         <Card ariaLabel="ハッシュタグ">
-          <SectionHeading icon="#️⃣" title="ハッシュタグ" description="# 付きでも # なしでも入力できます。" />
+          <SectionHeading title="ハッシュタグ" description="# 付きでも # なしでも入力できます。" />
           <Field htmlFor="hashtags" label="ハッシュタグ（任意）">
             <input id="hashtags" className={inputClass} value={form.hashtagsRaw} onChange={set("hashtagsRaw")} placeholder="例: 動画編集 初心者 YouTube #解説" />
           </Field>
@@ -372,10 +371,19 @@ function DiagnoseContent() {
         <>
           <div ref={resultRef} className="no-print flex flex-wrap items-center gap-3">
             <Button variant="secondary" onClick={() => downloadResultPng(result)}>
-              🖼️ 診断結果をPNGで保存
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <path d="M4 17v2h16v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+              </svg>
+              診断結果をPNGで保存
             </Button>
             <Button variant="secondary" onClick={() => window.print()}>
-              🖨️ 印刷 / PDF保存
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 9V4h10v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                <rect x="5" y="9" width="14" height="8" rx="2" stroke="currentColor" strokeWidth="2" />
+                <path d="M7 14h10v6H7z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+              </svg>
+              印刷 / PDF保存
             </Button>
           </div>
 
@@ -418,7 +426,7 @@ function DurationCard({ raw, seconds }: { raw: string; seconds: number | null })
   if (!raw.trim()) {
     return (
       <Card ariaLabel="動画尺">
-        <SectionHeading icon="⏱️" title="動画尺" />
+        <SectionHeading title="動画尺" />
         <p className="text-sm text-muted">動画尺が未入力です。チャプターとの整合チェックのため入力することを推奨します。</p>
       </Card>
     );
@@ -426,7 +434,7 @@ function DurationCard({ raw, seconds }: { raw: string; seconds: number | null })
   const total = seconds ?? 0;
   return (
     <Card ariaLabel="動画尺">
-      <SectionHeading icon="⏱️" title="動画尺" />
+      <SectionHeading title="動画尺" />
       <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
         <div className="rounded-lg border border-border p-3 text-center">
           <p className="text-sm text-muted">入力</p>

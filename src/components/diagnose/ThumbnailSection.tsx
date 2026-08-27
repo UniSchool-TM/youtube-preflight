@@ -62,7 +62,6 @@ export function ThumbnailSection({
     <div className="space-y-6">
       <Card ariaLabel="サムネイル基本情報">
         <SectionHeading
-          icon="🖼️"
           title="サムネイル基本情報"
           description="画像をブラウザ内で解析した結果です。外部へ送信されません。"
         />
@@ -97,7 +96,6 @@ export function ThumbnailSection({
 
       <Card ariaLabel="サムネイル画質指標">
         <SectionHeading
-          icon="📊"
           title="画質指標"
           description="輝度・コントラスト・彩度・エッジ量を全ピクセルから算出しています。"
         />
@@ -134,7 +132,6 @@ export function ThumbnailSection({
 
       <Card ariaLabel="サムネイル色分析">
         <SectionHeading
-          icon="🎨"
           title="色分析"
           description="主要カラーを平均色バケットから抽出。クリックでHEXをコピーできます。"
         />
@@ -147,7 +144,6 @@ export function ThumbnailSection({
 
       <Card ariaLabel="輝度ヒストグラム">
         <SectionHeading
-          icon="📈"
           title="輝度分布"
           description="全ピクセルの明るさの分布。左が暗い側、右が明るい側です。偏りすぎている場合は補正を検討してください。"
         />

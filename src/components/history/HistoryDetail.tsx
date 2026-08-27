@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { DiagnosisResult } from "@/types";
 import { Button, Card } from "@/components/ui";
+import { EmptyState } from "@/components/Doodles";
 import { ScoreSection } from "@/components/diagnose/ScoreSection";
 import { ChecklistSection } from "@/components/diagnose/ChecklistSection";
 import { ThumbnailSection } from "@/components/diagnose/ThumbnailSection";
@@ -49,14 +50,18 @@ export function HistoryDetail({ id }: { id: string }) {
     return <p className="text-sm text-muted">読み込み中…</p>;
   }
 
-  if (!entry) {
+if (!entry) {
     return (
-      <Card className="py-10 text-center">
-        <p className="text-sm text-muted">指定された履歴が見つかりません。</p>
-        <Link href="/history" className="mt-3 inline-block">
-          <Button variant="secondary">履歴一覧へ戻る</Button>
-        </Link>
-      </Card>
+      <EmptyState
+        art="note"
+        title="指定された履歴が見つかりません。"
+        description="履歴は端末ごとに保存されます。別の端末で診断した結果は、ここには表示されません。"
+        action={
+          <Link href="/history">
+            <Button size="lg">履歴一覧へ戻る</Button>
+          </Link>
+        }
+      />
     );
   }
 
@@ -76,8 +81,21 @@ export function HistoryDetail({ id }: { id: string }) {
           </p>
         </div>
         <div className="flex flex-wrap gap-2">
-          <Button onClick={() => downloadResultPng(result)}>🖼️ PNG保存</Button>
-          <Button onClick={() => window.print()}>🖨️ 印刷</Button>
+          <Button onClick={() => downloadResultPng(result)}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v12m0 0l-4-4m4 4l4-4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M4 17v2h16v-2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+            PNG保存
+          </Button>
+          <Button onClick={() => window.print()}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 9V4h10v5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <rect x="5" y="9" width="14" height="8" rx="2" stroke="currentColor" strokeWidth="2" />
+              <path d="M7 14h10v6H7z" stroke="currentColor" strokeWidth="2" strokeLinejoin="round" />
+            </svg>
+            印刷
+          </Button>
           <Link href={`/diagnose?h=${id}`}>
             <Button variant="primary">この内容で再診断</Button>
           </Link>

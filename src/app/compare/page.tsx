@@ -5,6 +5,7 @@ import Link from "next/link";
 import type { ThumbnailAnalysis, TitleAnalysis } from "@/types";
 import { Button, Card, Field, SectionHeading, cn, inputClass } from "@/components/ui";
 import { Meter } from "@/components/diagnose/analysisViews";
+import { EmptyState } from "@/components/Doodles";
 import { analyzeThumbnailFile } from "@/lib/imageDecode";
 import { analyzeTitle } from "@/lib/title";
 import { compareResults } from "@/lib/export";
@@ -93,7 +94,6 @@ function ThumbCompare() {
   return (
     <Card ariaLabel="サムネイル比較">
       <SectionHeading
-        icon="🖼️"
         title="サムネイル比較"
         description={`最大 ${MAX_THUMBS} 枚を横並びで比較できます。画像はブラウザ内でのみ処理されます。`}
         right={
@@ -148,7 +148,7 @@ function ThumbCompare() {
             <button
               type="button"
               onClick={() => remove(entry.key)}
-              className="mt-auto self-end rounded border border-border px-2 py-1 text-xs text-muted hover:border-crit hover:text-crit"
+              className="mt-auto self-end rounded border border-border px-3 py-2 text-xs text-muted hover:border-crit hover:text-crit"
             >
               削除
             </button>
@@ -249,7 +249,6 @@ function TitleAbCompare() {
   return (
     <Card ariaLabel="タイトルA/B比較">
       <SectionHeading
-        icon="🔀"
         title="タイトル A/B 比較"
         description="2案を横並びで比較します。文字数・構造・重要語の配置の違いを確認できます。"
       />
@@ -307,14 +306,22 @@ function DiagnosisCompare() {
   return (
     <Card ariaLabel="診断結果の比較">
       <SectionHeading
-        icon="📊"
         title="診断結果の比較"
         description="履歴から最大5件の診断結果を選んで比較します。"
       />
       {!loaded ? (
         <p className="text-sm text-muted">履歴を読み込み中…</p>
       ) : history.length === 0 ? (
-        <p className="text-sm text-muted">履歴がまだありません。<Link className="text-accent underline" href="/diagnose">診断ページ</Link>から最初の診断を行ってください。</p>
+        <EmptyState
+          art="note"
+          title="まだ比較できる履歴がありません。"
+          description="まず診断を行い、結果を保存するとここから選んで比較できるようになります。"
+          action={
+            <Link href="/diagnose">
+              <Button variant="primary" size="lg">診断を始める</Button>
+            </Link>
+          }
+        />
       ) : (
         <>
           <p className="mb-2 text-xs text-muted">比較する履歴を選択（{selected.length}/5）:</p>

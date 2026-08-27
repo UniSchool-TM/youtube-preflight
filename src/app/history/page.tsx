@@ -3,9 +3,10 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Button, Card, cn } from "@/components/ui";
+import { Button, cn } from "@/components/ui";
 import { useHistory } from "@/hooks/useHistory";
 import { HistoryDetail } from "@/components/history/HistoryDetail";
+import { EmptyState } from "@/components/Doodles";
 
 export default function HistoryPage() {
   return (
@@ -45,16 +46,20 @@ function HistoryContent() {
       </div>
 
       {!loaded ? (
-        <Card>
+        <div className="rounded-[20px] border border-border bg-card p-6">
           <p className="text-sm text-muted">読み込み中…</p>
-        </Card>
+        </div>
       ) : history.length === 0 ? (
-        <Card className="py-10 text-center">
-          <p className="text-sm text-muted">履歴はまだありません。</p>
-          <Link href="/diagnose" className="mt-3 inline-block">
-            <Button variant="primary">診断を始める</Button>
-          </Link>
-        </Card>
+        <EmptyState
+          art="clip"
+          title="履歴はまだありません。"
+          description="診断を終えると、結果がこの端末に保存されます（最大200件）。"
+          action={
+            <Link href="/diagnose">
+              <Button variant="primary" size="lg">診断を始める</Button>
+            </Link>
+          }
+        />
       ) : (
         <ul className="space-y-2">
           {history.map((h) => (
@@ -93,14 +98,14 @@ function HistoryContent() {
                 <div className="flex shrink-0 items-center gap-2">
                   <Link
                     href={`/diagnose?h=${h.id}`}
-                    className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:border-accent hover:text-accent"
+                    className="rounded-lg border border-border px-3 py-2 text-xs font-medium text-foreground hover:border-accent hover:text-accent"
                   >
                     この内容で再診断
                   </Link>
                   <button
                     type="button"
                     onClick={() => void remove(h.id)}
-                    className="rounded-lg border border-border px-3 py-1.5 text-xs font-medium text-muted hover:border-crit hover:text-crit"
+                    className="rounded-lg border border-border px-3 py-2 text-xs font-medium text-muted hover:border-crit hover:text-crit"
                     aria-label={`履歴 ${h.title} を削除`}
                   >
                     削除

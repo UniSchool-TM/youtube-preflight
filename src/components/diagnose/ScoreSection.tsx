@@ -91,7 +91,6 @@ export function ScoreSection({ result }: { result: DiagnosisResult }) {
   return (
     <Card ariaLabel="総合スコア" className="scroll-mt-24">
       <SectionHeading
-        icon="💯"
         title="投稿準備度"
         description="入力内容をルールベースで自動採点した結果です。"
       />

@@ -27,15 +27,32 @@ const FAQ: { q: string; a: string }[] = [
 export default function AboutPage() {
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-bold text-foreground">このツールについて</h1>
-        <p className="mt-1 text-sm text-muted">
-          YouTube Preflight は、動画の投稿前チェックを支援するブラウザ内完結型のWebアプリです。
-        </p>
+      <div className="grid items-center gap-6 sm:grid-cols-[1.3fr_0.7fr]">
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">このツールについて</h1>
+          <p className="mt-1 text-sm text-muted">
+            YouTube Preflight は、動画の投稿前チェックを支援するブラウザ内完結型のWebアプリです。
+          </p>
+        </div>
+        <div className="hidden justify-center sm:flex" aria-hidden="true">
+          <svg viewBox="0 0 220 120" className="h-28 w-auto text-muted" fill="none">
+            <circle cx="110" cy="60" r="44" stroke="currentColor" strokeWidth="2" strokeDasharray="3 8" strokeLinecap="round" />
+            <circle cx="110" cy="60" r="26" stroke="currentColor" strokeWidth="2" strokeDasharray="3 7" strokeLinecap="round" opacity="0.6" />
+            <path d="M110 16v88" stroke="var(--accent)" strokeWidth="2" opacity="0.5" />
+            <path d="M66 60h88" stroke="var(--accent)" strokeWidth="2" opacity="0.5" />
+            <path d="M110 60l52-44" stroke="var(--accent)" strokeWidth="2.5" strokeLinecap="round" />
+            <path d="M110 60 156 58l-46 2-2 46z" fill="var(--accent)" transform="rotate(45 110 60)" opacity="0.9" />
+            <circle cx="110" cy="60" r="4" fill="var(--accent)" />
+            <g transform="translate(158 10)">
+              <rect width="34" height="22" rx="4" fill="var(--card)" stroke="currentColor" strokeWidth="2" />
+              <path d="M7 12l5 5 10-10" stroke="var(--good)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </g>
+          </svg>
+        </div>
       </div>
 
       <Card ariaLabel="方針">
-        <SectionHeading icon="🎯" title="方針" />
+        <SectionHeading title="方針" />
         <ul className="list-inside space-y-2 text-sm leading-relaxed text-foreground/90">
           <li>・外部AI・外部API・アカウント連携を一切使用せず、データはブラウザ内で処理します。</li>
           <li>・判定はルールベースで、理由を明示します。結果の責任は利用者が負います。</li>
@@ -44,7 +61,7 @@ export default function AboutPage() {
       </Card>
 
       <Card ariaLabel="チェックできる項目">
-        <SectionHeading icon="✅" title="チェックできる項目" />
+        <SectionHeading title="チェックできる項目" />
         <ul className="list-inside space-y-1.5 text-sm text-foreground/90">
           <li>・タイトル: 文字数 / 文字種 / 構造 / 重要語の位置 / 表示シミュレーション</li>
           <li>・サムネイル: 解像度 / 比率 / 明るさ / コントラスト / 彩度 / 情報量（エッジ）/ 主要色 / 輝度分布</li>
@@ -57,7 +74,7 @@ export default function AboutPage() {
       </Card>
 
       <Card ariaLabel="技術スタック">
-        <SectionHeading icon="🧰" title="技術スタック" />
+        <SectionHeading title="技術スタック" />
         <p className="text-sm leading-relaxed text-muted">
           Next.js（App Router）/ TypeScript / Tailwind CSS。画像解析は Web Worker 上の Canvas API、
           保存は localStorage / IndexedDB、PDF出力はブラウザの印刷機能を使用しています。
@@ -66,7 +83,7 @@ export default function AboutPage() {
       </Card>
 
       <Card ariaLabel="よくある質問">
-        <SectionHeading icon="❓" title="よくある質問" />
+        <SectionHeading title="よくある質問" />
         <dl className="space-y-4">
           {FAQ.map((f, i) => (
             <div key={i} className="rounded-lg border border-border p-4">

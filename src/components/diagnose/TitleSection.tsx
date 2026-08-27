@@ -101,7 +101,6 @@ export function TitleSection({ analysis }: { analysis: TitleAnalysis }) {
     <div className="space-y-6">
       <Card ariaLabel="タイトル文字数分析">
         <SectionHeading
-          icon="🔤"
           title="タイトル文字構成"
           description="文字数と文字種の内訳（Unicodeコードポイント基準、ブラウザ内で計算）。"
         />
@@ -119,7 +118,6 @@ export function TitleSection({ analysis }: { analysis: TitleAnalysis }) {
 
       <Card ariaLabel="タイトル構造分析">
         <SectionHeading
-          icon="🧩"
           title="構造"
           description="記号・疑問形・感嘆表現の有無を検出します。"
         />
@@ -140,7 +138,6 @@ export function TitleSection({ analysis }: { analysis: TitleAnalysis }) {
 
       <Card ariaLabel="重要語の位置分析">
         <SectionHeading
-          icon="🎯"
           title="重要語の位置分析"
           description="数字・カタカナ語・漢字・大文字英単語などをルールベースで「重要語」とみなした配置を分析します（AIによる意味理解ではありません）。"
           right={
@@ -166,7 +163,6 @@ export function TitleSection({ analysis }: { analysis: TitleAnalysis }) {
 
       <Card ariaLabel="タイトル表示シミュレーター">
         <SectionHeading
-          icon="📱"
           title="タイトル表示シミュレーター"
           description="各デバイスの想定表示幅でタイトルがどのように表示されるかを確認できます。"
         />

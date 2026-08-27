@@ -17,16 +17,21 @@ function Logo() {
   return (
     <Link
       href="/"
-      className="flex items-center gap-2 rounded-lg focus-visible:outline-accent"
+      className="group flex items-center gap-2.5 rounded-lg focus-visible:outline-accent"
       aria-label="YouTube Preflight ホーム"
     >
-      <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
-        <rect width="28" height="28" rx="6" fill="var(--accent)" />
-        <path d="M10 8.5v11l9-5.5-9-5.5z" fill="#fff" />
-        <path d="M10 8.5v11l9-5.5-9-5.5z" fill="#fff" opacity="0.4" transform="translate(0,0)" />
+      <svg width="30" height="30" viewBox="0 0 32 32" fill="none" aria-hidden="true" className="shrink-0 transition-transform group-hover:-translate-y-0.5">
+        <rect width="32" height="32" rx="9" fill="var(--accent)" />
+        <path d="M6.5 15.8h2.2M9.2 18.2h1.9" stroke="var(--accent)" strokeWidth="1.6" strokeLinecap="round" opacity="0.7" />
+        <path d="M7.2 17.7 16.4 24l8.4-13.6-.5-.9L8.6 15z" fill="#fff" />
+        <path d="M16.9 23.9 12 17.2l10-2.4z" fill="var(--accent)" opacity="0.9" />
+        <path d="M12.2 20.6 6.5 14.4h3.6l2 2.9z" fill="#fff" opacity="0.75" />
       </svg>
-      <span className="text-base font-bold leading-tight tracking-tight text-foreground">
-        YouTube<span className="text-accent"> Preflight</span>
+      <span className="flex flex-col leading-none">
+        <span className="text-[15px] font-extrabold tracking-tight text-foreground">
+          YouTube<span className="text-accent"> Preflight</span>
+        </span>
+        <span className="mt-0.5 font-hand text-xs text-muted">pre-flight check ✈</span>
       </span>
     </Link>
   );
@@ -117,6 +122,6 @@ export function Header() {
 
 function cnHeader(scrolled: boolean): string {
   const cls =
-    "sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur transition-shadow";
+    "sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur pt-[env(safe-area-inset-top)] transition-shadow";
   return scrolled ? `${cls} shadow-sm` : cls;
 }

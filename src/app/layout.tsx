@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { Caveat, M_PLUS_Rounded_1c } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
@@ -7,6 +8,20 @@ import { PwaRegister } from "@/components/PwaRegister";
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? "https://youtube-preflight.jp";
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
+const ypFont = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  weight: ["400", "500", "700", "800"],
+  variable: "--yp-font",
+  display: "swap",
+});
+
+const handFont = Caveat({
+  subsets: ["latin"],
+  weight: ["600", "700"],
+  variable: "--yp-hand",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -49,20 +64,27 @@ export const metadata: Metadata = {
     icon: `${BASE_PATH}/icon.svg`,
     apple: `${BASE_PATH}/icon-180.png`,
   },
+  appleWebApp: {
+    capable: true,
+    title: "YT Preflight",
+    statusBarStyle: "default",
+  },
+  formatDetection: { telephone: false },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f6f7fa" },
-    { media: "(prefers-color-scheme: dark)", color: "#0d0f14" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f4ee" },
+    { media: "(prefers-color-scheme: dark)", color: "#141210" },
   ],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ja" suppressHydrationWarning>
+    <html lang="ja" suppressHydrationWarning className={`${ypFont.variable} ${handFont.variable}`}>
       <body className="flex min-h-screen flex-col">
         <a href="#main" className="skip-link">
           メインコンテンツへスキップ

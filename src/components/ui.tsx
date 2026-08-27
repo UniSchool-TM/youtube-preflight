@@ -30,7 +30,7 @@ export function Card({
     <section
       aria-label={ariaLabel}
       className={cn(
-        "rounded-2xl border border-border bg-card shadow-sm",
+        "rounded-[20px] border border-border bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_28px_-14px_rgba(0,0,0,0.12)]",
         padded && "p-4 sm:p-6",
         className
       )}
@@ -144,12 +144,10 @@ export function severityColorClass(severity: Severity): string {
 /* ------------------------------------------------------------------ */
 
 export function SectionHeading({
-  icon,
   title,
   description,
   right,
 }: {
-  icon?: string;
   title: string;
   description?: string;
   right?: ReactNode;
@@ -157,11 +155,8 @@ export function SectionHeading({
   return (
     <div className="mb-4 flex flex-wrap items-start justify-between gap-3">
       <div>
-        <h2 className="flex items-center gap-2 text-lg font-bold text-foreground">
-          {icon && <span aria-hidden="true">{icon}</span>}
-          {title}
-        </h2>
-        {description && <p className="mt-1 text-sm text-muted">{description}</p>}
+        <h2 className="heading-mark text-lg font-bold text-foreground">{title}</h2>
+        {description && <p className="mt-2 text-sm text-muted">{description}</p>}
       </div>
       {right}
     </div>
@@ -175,23 +170,36 @@ export function SectionHeading({
 type ButtonVariant = "primary" | "secondary" | "danger" | "ghost";
 
 const buttonStyles: Record<ButtonVariant, string> = {
-  primary: "bg-accent text-white hover:opacity-90",
-  secondary: "bg-card text-foreground border border-border hover:border-accent",
+  primary:
+    "bg-accent text-white shadow-[0_2px_0_rgba(0,0,0,0.2),0_8px_16px_-6px_var(--accent)] hover:brightness-110 active:translate-y-px active:shadow-[0_1px_0_rgba(0,0,0,0.2)]",
+  secondary:
+    "bg-card text-foreground border border-border shadow-[0_1px_2px_rgba(0,0,0,0.05)] hover:border-accent hover:text-accent",
   danger: "bg-crit/10 text-crit border border-crit/40 hover:bg-crit/20",
   ghost: "text-muted hover:text-foreground hover:bg-border/50",
+};
+
+const buttonSizes = {
+  sm: "px-3 py-1.5 text-xs rounded-lg",
+  md: "px-4 py-2 text-sm rounded-xl",
+  lg: "px-7 py-3.5 text-base rounded-full",
 };
 
 export function Button({
   children,
   variant = "secondary",
+  size = "md",
   className,
   ...props
-}: React.ButtonHTMLAttributes<HTMLButtonElement> & { variant?: ButtonVariant }) {
+}: React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  variant?: ButtonVariant;
+  size?: keyof typeof buttonSizes;
+}) {
   return (
     <button
       {...props}
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50",
+        "inline-flex items-center justify-center gap-2 font-bold transition-all disabled:cursor-not-allowed disabled:opacity-50",
+        buttonSizes[size],
         buttonStyles[variant],
         className
       )}
@@ -274,7 +282,7 @@ export function Field({
 }
 
 export const inputClass =
-  "w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground placeholder:text-muted/70 focus:border-accent focus:outline-none";
+  "w-full rounded-xl border border-border bg-card px-3 py-2 text-base text-foreground placeholder:text-muted/70 focus:border-accent focus:outline-none focus:ring-4 focus:ring-ring transition-shadow sm:text-sm";
 
 export function ErrorNotice({ message }: { message: string }) {
   return (

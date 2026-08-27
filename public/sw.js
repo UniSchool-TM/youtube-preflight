@@ -1,14 +1,25 @@
-const CACHE = "yp-cache-v1";
-const STATIC_CACHE = "yp-static-v1";
+const CACHE = "yp-cache-v2";
+const STATIC_CACHE = "yp-static-v2";
 
-const PRECACHE_ROUTES = ["/", "/diagnose", "/compare", "/history", "/settings", "/about"];
+// Base path is derived from this script's location, so the worker keeps
+// working under a subpath deployment (e.g. /youtube-preflight/).
+const BASE = self.location.pathname.replace(/\/sw\.js$/, "") || "";
+
+const PRECACHE_ROUTES = [
+  `${BASE}/`,
+  `${BASE}/diagnose`,
+  `${BASE}/compare`,
+  `${BASE}/history`,
+  `${BASE}/settings`,
+  `${BASE}/about`,
+];
 const STATIC_ASSETS = [
-  "/manifest.webmanifest",
-  "/icon-192.png",
-  "/icon-512.png",
-  "/icon-180.png",
-  "/icon.svg",
-  "/og-image.png",
+  `${BASE}/manifest.webmanifest`,
+  `${BASE}/icon-192.png`,
+  `${BASE}/icon-512.png`,
+  `${BASE}/icon-180.png`,
+  `${BASE}/icon.svg`,
+  `${BASE}/og-image.png`,
 ];
 
 self.addEventListener("install", (event) => {
@@ -44,7 +55,7 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
 
-  // Navigation: network first, fall back to cached shell.
+  // Navigation: network first, fall back to the cached app shell.
   if (req.mode === "navigate") {
     event.respondWith(
       (async () => {
@@ -56,8 +67,13 @@ self.addEventListener("fetch", (event) => {
         } catch {
           const cached = await caches.match(req, { ignoreSearch: true });
           if (cached) return cached;
-          return (await caches.match("/", { ignoreSearch: true })) ||
-            new Response("オフラインです", { status: 503 });
+          return (
+            (await caches.match(`${BASE}/`, { ignoreSearch: true })) ||
+            new Response("オフラインです。", {
+              status: 503,
+              headers: { "Content-Type": "text/plain; charset=utf-8" },
+            })
+          );
         }
       })()
     );
@@ -65,7 +81,7 @@ self.addEventListener("fetch", (event) => {
   }
 
   // Static hashed assets: cache first, then network + populate cache.
-  if (url.pathname.startsWith("/_next/static/")) {
+  if (url.pathname.includes("/_next/static/")) {
     event.respondWith(
       (async () => {
         const cached = await caches.match(req);

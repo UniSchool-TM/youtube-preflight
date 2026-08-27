@@ -68,13 +68,12 @@ export default function SettingsPage() {
       </div>
 
       <Card ariaLabel="表示設定">
-        <SectionHeading icon="🎨" title="表示" />
+        <SectionHeading title="表示" />
         <ThemePicker />
       </Card>
 
       <Card ariaLabel="履歴設定">
         <SectionHeading
-          icon="🗂️"
           title="履歴"
           description="診断を実行すると結果が自動で履歴に保存されます（最大200件）。"
         />
@@ -101,7 +100,6 @@ export default function SettingsPage() {
 
       <Card ariaLabel="データ削除">
         <SectionHeading
-          icon="🧹"
           title="データの初期化"
           description="履歴・設定・テーマ・IndexedDBのサムネイル画像をすべて削除し、初期状態に戻します。"
         />
@@ -123,7 +121,7 @@ export default function SettingsPage() {
       </Card>
 
       <Card ariaLabel="プライバシー">
-        <SectionHeading icon="🔒" title="プライバシー" />
+        <SectionHeading title="プライバシー" />
         <p className="text-sm leading-relaxed text-muted">
           本ツールは入力内容を外部に送信しません。画像解析はブラウザ内（Web Worker）で、
           保存は localStorage / IndexedDB のみを使用しています。通信は静的ホスティングの配信のみです。

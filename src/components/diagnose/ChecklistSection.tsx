@@ -18,7 +18,6 @@ export function ChecklistSection({ result }: { result: DiagnosisResult }) {
   return (
     <Card ariaLabel="投稿前チェックリスト">
       <SectionHeading
-        icon="✅"
         title="投稿前チェック"
         description="投稿前に確認すべき項目を 3 段階（Critical / Warning / Info）で表示します。"
         right={
