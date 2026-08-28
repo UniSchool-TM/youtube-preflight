@@ -61,8 +61,11 @@ export const metadata: Metadata = {
   applicationName: "YouTube Preflight",
   manifest: `${BASE_PATH}/manifest.webmanifest`,
   icons: {
-    icon: `${BASE_PATH}/icon.svg`,
-    apple: `${BASE_PATH}/icon-180.png`,
+    icon: [
+      { url: `${BASE_PATH}/icon.svg?v=3`, type: "image/svg+xml" },
+      { url: `${BASE_PATH}/favicon.ico?v=3`, sizes: "any" },
+    ],
+    apple: `${BASE_PATH}/icon-180.png?v=3`,
   },
   appleWebApp: {
     capable: true,

@@ -1,5 +1,6 @@
-const CACHE = "yp-cache-v2";
-const STATIC_CACHE = "yp-static-v2";
+const VERSION = "3";
+const CACHE = `yp-cache-v${VERSION}`;
+const STATIC_CACHE = `yp-static-v${VERSION}`;
 
 // Base path is derived from this script's location, so the worker keeps
 // working under a subpath deployment (e.g. /youtube-preflight/).
@@ -18,7 +19,8 @@ const STATIC_ASSETS = [
   `${BASE}/icon-192.png`,
   `${BASE}/icon-512.png`,
   `${BASE}/icon-180.png`,
-  `${BASE}/icon.svg`,
+  `${BASE}/icon.svg?v=${VERSION}`,
+  `${BASE}/favicon.ico?v=${VERSION}`,
   `${BASE}/og-image.png`,
 ];
 
