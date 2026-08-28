@@ -7,7 +7,7 @@ const PALETTE = {
   line: "#2b303b",
   text: "#e8ebf0",
   sub: "#9aa3b2",
-  accent: "#2a6df4",
+  accent: "#ff4356",
   good: "#22c55e",
   warn: "#eab308",
   crit: "#ef4444",

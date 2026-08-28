@@ -17,6 +17,7 @@ import type {
 import { analyzeChapters } from "@/lib/chapter";
 import { analyzeDescription } from "@/lib/description";
 import { parseDuration } from "@/lib/duration";
+import { findGenreKeyword } from "@/lib/genres";
 import { analyzeHashtags } from "@/lib/hashtag";
 import { analyzeTitle } from "@/lib/title";
 import { analyzeTitleThumbnail } from "@/lib/titleThumbnail";
@@ -113,6 +114,9 @@ export function runDiagnosis(
     chapters,
     hashtags,
     duration,
+    genre: input.genre,
+    titleText: input.title,
+    descriptionText: input.description,
   });
   const summary = summarize(checklist);
 
@@ -147,6 +151,9 @@ interface BuildCtx {
   chapters: ChapterAnalysis | null;
   hashtags: HashtagAnalysis | null;
   duration: DurationAnalysis;
+  genre: string;
+  titleText: string;
+  descriptionText: string;
 }
 
 function item(key: string, label: string, status: ChecklistStatus, detail: string): ChecklistItem {
@@ -281,6 +288,24 @@ export function buildChecklist(ctx: BuildCtx): ChecklistItem[] {
   const dur = ctx.duration;
   st = dur.valid ? "pass" : "warning";
   out.push(item("duration", "動画尺", st, dur.valid ? "形式OK" : dur.raw.trim() ? "形式NG" : "未入力"));
+
+  // Genre
+  const genre = ctx.genre;
+  if (!genre) {
+    out.push(item("genre", "ジャンル", "unset", "未選択（任意）"));
+  } else {
+    const hit = findGenreKeyword(genre, [ctx.titleText, ctx.descriptionText]);
+    out.push(
+      item(
+        "genre",
+        "ジャンル",
+        hit ? "pass" : "info",
+        hit
+          ? `ジャンル: ${genre}（タイトル・概要欄に「${hit}」が見つかりました）`
+          : `ジャンル: ${genre}（タイトル・概要欄にジャンルの語があると検索に寄与します）`
+      )
+    );
+  }
 
   // Technical
   const techProblems: ChecklistStatus[] = [];

@@ -135,7 +135,7 @@ describe("runDiagnosis", () => {
 });
 
 describe("buildChecklist", () => {
-  it("builds 13 items covering every area", () => {
+  it("builds 14 items covering every area", () => {
     const text = analyzeTextInputs(goodInput);
     const list = buildChecklist({
       thumbnail: goodThumbnail(),
@@ -145,8 +145,11 @@ describe("buildChecklist", () => {
       chapters: text.chapters,
       hashtags: text.hashtags,
       duration: text.duration,
+      genre: goodInput.genre,
+      titleText: goodInput.title,
+      descriptionText: goodInput.description,
     });
-    expect(list).toHaveLength(13);
+    expect(list).toHaveLength(14);
     const keys = new Set(list.map((i) => i.key));
     expect(keys).toEqual(
       new Set([
@@ -162,9 +165,44 @@ describe("buildChecklist", () => {
         "hashtag",
         "chapter",
         "duration",
+        "genre",
         "technical",
       ])
     );
+  });
+
+  it("marks genre as unset when empty, pass when keyword is present", () => {
+    const text = analyzeTextInputs(goodInput);
+    const base = {
+      thumbnail: goodThumbnail(),
+      title: text.title,
+      relation: text.relation,
+      description: text.description,
+      chapters: text.chapters,
+      hashtags: text.hashtags,
+      duration: text.duration,
+    };
+    const noGenre = buildChecklist({ ...base, genre: "", titleText: "", descriptionText: "" });
+    const genreItem = noGenre.find((i) => i.key === "genre");
+    expect(genreItem?.status).toBe("unset");
+
+    const hit = buildChecklist({
+      ...base,
+      genre: "ゲーム",
+      titleText: "【検証】人気のゲームを徹底レビュー",
+      descriptionText: "",
+    });
+    const hitItem = hit.find((i) => i.key === "genre");
+    expect(hitItem?.status).toBe("pass");
+    expect(hitItem?.detail).toContain("ゲーム");
+
+    const miss = buildChecklist({
+      ...base,
+      genre: "ゲーム",
+      titleText: "毎朝着替えを投稿",
+      descriptionText: "日常の記録",
+    });
+    expect(miss.find((i) => i.key === "genre")?.status).toBe("info");
   });
 
   it("totals statuses correctly via summarize", () => {
@@ -177,10 +215,13 @@ describe("buildChecklist", () => {
       chapters: text.chapters,
       hashtags: text.hashtags,
       duration: text.duration,
+      genre: goodInput.genre,
+      titleText: goodInput.title,
+      descriptionText: goodInput.description,
     });
     const s = summarize(list);
     const total = s.critical + s.warning + s.info + s.pass + s.unset;
-    expect(total).toBe(13);
+    expect(total).toBe(14);
     expect(s.critical + s.warning).toBe(
       list.filter((c) => c.status === "critical" || c.status === "warning").length
     );

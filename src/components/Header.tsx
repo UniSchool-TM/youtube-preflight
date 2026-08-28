@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { cn } from "@/components/ui";
 
 const NAV = [
   { href: "/", label: "ホーム" },
@@ -41,6 +42,14 @@ export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [prevPath, setPrevPath] = useState(pathname);
+
+  // Close mobile menu when navigating to a different route
+  // (adjusting state during render; avoids closing on first mount)
+  if (prevPath !== pathname) {
+    setPrevPath(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -48,6 +57,21 @@ export function Header() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Scroll lock + Escape while the mobile menu is open
+  useEffect(() => {
+    if (!open) return;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -85,37 +109,87 @@ export function Header() {
           aria-label={open ? "メニューを閉じる" : "メニューを開く"}
           onClick={() => setOpen((v) => !v)}
         >
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            {open ? (
-              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            ) : (
+          <span className="relative block h-6 w-6">
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className={cn(
+                "absolute inset-0 m-auto transition-all duration-300 ease-out",
+                open ? "scale-75 rotate-90 opacity-0" : "scale-100 rotate-0 opacity-100"
+              )}
+            >
               <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            )}
-          </svg>
+            </svg>
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+              className={cn(
+                "absolute inset-0 m-auto transition-all duration-300 ease-out",
+                open ? "scale-100 rotate-0 opacity-100" : "scale-75 -rotate-90 opacity-0"
+              )}
+            >
+              <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </span>
         </button>
       </div>
-      {open && (
-        <nav id="mobile-nav" aria-label="モバイルメニュー" className="border-t border-border md:hidden">
-          <ul className="mx-auto flex max-w-6xl flex-col px-4 py-2">
-            {NAV.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  aria-current={isActive(item.href) ? "page" : undefined}
-                  className={
-                    isActive(item.href)
-                      ? "block rounded-lg bg-accent/10 px-3 py-3 text-sm font-semibold text-accent"
-                      : "block rounded-lg px-3 py-3 text-sm font-medium text-muted hover:text-foreground"
-                  }
-                >
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+      <div className="relative md:hidden">
+        {open && (
+          <button
+            type="button"
+            aria-label="メニューを閉じる"
+            onClick={() => setOpen(false)}
+            tabIndex={-1}
+            className="anim-fade-in fixed inset-0 z-20 bg-black/30 backdrop-blur-[2px]"
+          />
+        )}
+        <nav
+          id="mobile-nav"
+          aria-label="モバイルメニュー"
+          aria-hidden={!open}
+          inert={!open ? true : undefined}
+          className={cn(
+            "grid transition-[grid-template-rows] duration-300 ease-out",
+            open ? "pointer-events-auto grid-rows-[1fr]" : "pointer-events-none grid-rows-[0fr]"
+          )}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div className="border-t border-border">
+              <ul className="mx-auto flex max-w-6xl flex-col px-4 py-2">
+                {NAV.map((item, i) => (
+                  <li
+                    key={item.href}
+                    style={{ transitionDelay: open ? `${80 + i * 45}ms` : "0ms" }}
+                    className={cn(
+                      "transition-all duration-300 ease-out",
+                      open ? "translate-y-0 opacity-100" : "-translate-y-1.5 opacity-0"
+                    )}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      aria-current={isActive(item.href) ? "page" : undefined}
+                      className={
+                        isActive(item.href)
+                          ? "block rounded-lg bg-accent/10 px-3 py-3 text-sm font-semibold text-accent"
+                          : "block rounded-lg px-3 py-3 text-sm font-medium text-muted hover:text-foreground"
+                      }
+                    >
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
         </nav>
-      )}
+      </div>
     </header>
   );
 }

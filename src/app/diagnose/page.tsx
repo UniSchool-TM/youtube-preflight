@@ -16,7 +16,9 @@ import { RelationSection, DescriptionSection, ChapterSection, HashtagSection } f
 import { ScoreSection } from "@/components/diagnose/ScoreSection";
 import { ChecklistSection } from "@/components/diagnose/ChecklistSection";
 import { DurationInput } from "@/components/diagnose/DurationInput";
+import { HashtagInput } from "@/components/diagnose/HashtagInput";
 import { PrintSheet } from "@/components/diagnose/PrintSheet";
+import { GENRES } from "@/lib/genres";
 import { analyzeTextInputs, generateId, runDiagnosis } from "@/lib/diagnose";
 import { analyzeThumbnailFile } from "@/lib/imageDecode";
 import { downloadResultPng } from "@/lib/export";
@@ -81,6 +83,11 @@ function DiagnoseContent() {
   const previewRef = useRef<string | null>(null);
 
   const set = (k: keyof typeof EMPTY_FORM) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((f) => ({ ...f, [k]: e.target.value }));
+    setResult(null);
+  };
+
+  const setSelect = (k: keyof typeof EMPTY_FORM) => (e: React.ChangeEvent<HTMLSelectElement>) => {
     setForm((f) => ({ ...f, [k]: e.target.value }));
     setResult(null);
   };
@@ -272,8 +279,28 @@ function DiagnoseContent() {
                 setResult(null);
               }}
             />
-            <Field htmlFor="genre" label="ジャンル" hint="任意">
-              <input id="genre" className={inputClass} value={form.genre} onChange={set("genre")} placeholder="例: 解説 / Vlog / ゲーム" />
+            <Field
+              htmlFor="genre"
+              label="ジャンル"
+              hint="YouTube Studio の動画「カテゴリ」と同じ公式ジャンル15種から選択できます。"
+            >
+              <select
+                id="genre"
+                className={inputClass}
+                value={form.genre}
+                onChange={setSelect("genre")}
+              >
+                <option value="">選択しない（任意）</option>
+                {GENRES.map((g) => (
+                  <option key={g.id} value={g.label}>
+                    {g.label}
+                  </option>
+                ))}
+                {form.genre &&
+                  !GENRES.some((g) => g.label === form.genre) && (
+                    <option value={form.genre}>{form.genre}</option>
+                  )}
+              </select>
             </Field>
             <Field htmlFor="target" label="ターゲット" hint="任意（想定視聴者）">
               <input id="target" className={inputClass} value={form.target} onChange={set("target")} placeholder="例: 副業で動画編集を始めたい人" />
@@ -333,9 +360,18 @@ function DiagnoseContent() {
 
         {/* Hashtags */}
         <Card ariaLabel="ハッシュタグ">
-          <SectionHeading title="ハッシュタグ" description="# 付きでも # なしでも入力できます。" />
-          <Field htmlFor="hashtags" label="ハッシュタグ（任意）">
-            <input id="hashtags" className={inputClass} value={form.hashtagsRaw} onChange={set("hashtagsRaw")} placeholder="例: 動画編集 初心者 YouTube #解説" />
+          <SectionHeading
+            title="ハッシュタグ"
+            description="Enter または , で入力した語をハッシュタグとして確定できます。「# 付きでも # なしでもOKです。」"
+          />
+          <Field htmlFor="hashtag-input" label="ハッシュタグ（任意）">
+            <HashtagInput
+              value={form.hashtagsRaw}
+              onChange={(v) => {
+                setForm((f) => ({ ...f, hashtagsRaw: v }));
+                setResult(null);
+              }}
+            />
           </Field>
         </Card>
 
