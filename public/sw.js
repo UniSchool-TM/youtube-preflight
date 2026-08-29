@@ -1,4 +1,4 @@
-const VERSION = "3";
+const VERSION = "4";
 const CACHE = `yp-cache-v${VERSION}`;
 const STATIC_CACHE = `yp-static-v${VERSION}`;
 

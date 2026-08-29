@@ -224,13 +224,12 @@ function drawIconBmp(size, { dashThickness = 0.9 } = {}) {
 function encodeIco(sizes) {
   const imgs = sizes.map((s) => {
     const { bgra } = drawIconBmp(s);
-    const bottomUpInsets = 1 + (s % 2); // odd sizes need extra padding row
-    const bottomUp = Buffer.alloc((s * 4 + 1 - bottomUpInsets) * s);
-    // BMP rows are bottom-up
+    // 32bpp rows are 4-byte aligned already; no per-row padding needed.
+    const rowBytes = s * 4;
+    const bottomUp = Buffer.alloc(rowBytes * s);
+    // BMP rows are stored bottom-up
     for (let y = 0; y < s; y++) {
-      const srcRow = y * s * 4;
-      const dstRow = (s - 1 - y) * (s * 4) + 1;
-      bgra.copy(bottomUp, dstRow, srcRow, srcRow + s * 4);
+      bgra.copy(bottomUp, (s - 1 - y) * rowBytes, y * rowBytes, (y + 1) * rowBytes);
     }
     // AND mask: 1bpp, opaque, each scanline padded to 32 bits
     const maskRowBytes = Math.ceil(s / 8);

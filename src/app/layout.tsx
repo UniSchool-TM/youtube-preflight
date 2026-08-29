@@ -62,10 +62,10 @@ export const metadata: Metadata = {
   manifest: `${BASE_PATH}/manifest.webmanifest`,
   icons: {
     icon: [
-      { url: `${BASE_PATH}/icon.svg?v=3`, type: "image/svg+xml" },
-      { url: `${BASE_PATH}/favicon.ico?v=3`, sizes: "any" },
+      { url: `${BASE_PATH}/icon.svg?v=4`, type: "image/svg+xml" },
+      { url: `${BASE_PATH}/favicon.ico?v=4`, sizes: "any" },
     ],
-    apple: `${BASE_PATH}/icon-180.png?v=3`,
+    apple: `${BASE_PATH}/icon-180.png?v=4`,
   },
   appleWebApp: {
     capable: true,
