@@ -1,0 +1,1 @@
+(globalThis.TURBOPACK||(globalThis.TURBOPACK=[])).push(["object"==typeof document?document.currentScript:void 0,87992,t=>{"use strict";var e=t.i(18334);async function i(t,i,o){return await new Promise(t=>setTimeout(t,0)),await new Promise(t=>requestAnimationFrame(t)),(0,e.computeThumbnailStats)(t,i,o)}t.s(["computeStatsChunked",0,i])}]);
