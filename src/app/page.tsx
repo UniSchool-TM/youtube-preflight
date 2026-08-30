@@ -3,7 +3,7 @@ import type { SVGProps } from "react";
 import { Button } from "@/components/ui";
 import { HeroIllustration } from "@/components/HeroIllustration";
 
-type FeatureIconKey = "type" | "photo" | "swap" | "list" | "gauge" | "lock";
+type FeatureIconKey = "type" | "photo" | "swap" | "list" | "gauge" | "lock" | "sparkle";
 
 function FeatureIcon({ name }: { name: FeatureIconKey }) {
   const common: Omit<SVGProps<SVGSVGElement>, "children"> = {
@@ -65,6 +65,13 @@ function FeatureIcon({ name }: { name: FeatureIconKey }) {
           <circle cx="12" cy="15" r="1.3" fill="currentColor" stroke="none" />
         </svg>
       );
+    case "sparkle":
+      return (
+        <svg {...common}>
+          <path d="M12 3l1.8 4.6L18.5 9.5l-4.7 1.9L12 16l-1.8-4.6-4.7-1.9 4.7-1.9z" />
+          <path d="M19 14l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z" opacity="0.7" />
+        </svg>
+      );
   }
 }
 
@@ -104,6 +111,12 @@ const FEATURES: { icon: FeatureIconKey; tint: string; title: string; desc: strin
     tint: "bg-info/10 text-info",
     title: "ブラウザ内完結",
     desc: "外部AIや外部API・アカウント連携を一切使わず、画像やテキストをサーバーへ送信しません。",
+  },
+  {
+    icon: "sparkle",
+    tint: "bg-accent/10 text-accent",
+    title: "AI改善提案（オプション）",
+    desc: "診断後に端末内で動作する小規模AIが改善ポイントを提案。モデルは初回のみダウンロード。",
   },
 ];
 

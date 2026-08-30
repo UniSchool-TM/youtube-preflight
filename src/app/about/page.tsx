@@ -12,7 +12,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "OCRや外部AIは使っていますか？",
-    a: "使いません。サムネイル上の文字の読み取りは行わず、「サムネイル文字」欄に入力された文字とタイトルを比較する方式です。",
+    a: "外部AIは使いません。サムネイル上の文字の読み取りは行わず、「サムネイル文字」欄に入力された文字とタイトルを比較する方式です。診断結果画面の「AIによる改善提案」は任意のオプション機能で、端末内で動作する小規模AI（モデルは初回のみダウンロード）を使い、入力内容を外部へ送信しません。",
   },
   {
     q: "スコアの再現性は？",
@@ -78,7 +78,9 @@ export default function AboutPage() {
         <p className="text-sm leading-relaxed text-muted">
           Next.js（App Router）/ TypeScript / Tailwind CSS。画像解析は Web Worker 上の Canvas API、
           保存は localStorage / IndexedDB、PDF出力はブラウザの印刷機能を使用しています。
-          生成AIによるテキスト解析・画像認識は一切使用していません。
+          診断スコアはルールベースで生成AIは使っていません。「AIによる改善提案」だけが任意オプションで、
+          端末内で動作する小規模AI（モデルはHugging FaceのCDNから初回のみダウンロード）を使用します。
+          入力内容は端末から送信されません。
         </p>
       </Card>
 

@@ -15,6 +15,7 @@ import { TitleSection } from "@/components/diagnose/TitleSection";
 import { RelationSection, DescriptionSection, ChapterSection, HashtagSection } from "@/components/diagnose/TextSections";
 import { ScoreSection } from "@/components/diagnose/ScoreSection";
 import { ChecklistSection } from "@/components/diagnose/ChecklistSection";
+import { AiImproveCard } from "@/components/diagnose/AiImproveCard";
 import { DurationInput } from "@/components/diagnose/DurationInput";
 import { HashtagInput } from "@/components/diagnose/HashtagInput";
 import { PrintSheet } from "@/components/diagnose/PrintSheet";
@@ -442,6 +443,7 @@ function DiagnoseContent() {
               seconds={result.duration?.seconds ?? null}
             />
             <ChecklistSection result={result} />
+            <AiImproveCard result={result} />
           </div>
 
           {/* Print-only sheet */}
